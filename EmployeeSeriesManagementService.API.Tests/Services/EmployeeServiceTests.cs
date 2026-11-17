@@ -10,11 +10,10 @@ namespace EmployeeSeriesManagementService.Api.Tests.Services;
 
 public class EmployeeServiceTests
 {
-
+    // test case for employee not exists to get address
     [Fact]
     public async Task GetAddressesAsync_WhenEmployeeDoesNotExist_ReturnsNull()
     {
-        // Arrange
         var options = new DbContextOptionsBuilder<EmployeeSeriesDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
@@ -26,11 +25,8 @@ public class EmployeeServiceTests
         var employeeService = new EmployeeService(dbContext, logger.Object);
 
         int employeeId = 999;
-
-        // Act
         var result = await employeeService.GetAddressesAsync(employeeId);
-
-        // Assert
+        
         Assert.Null(result);
 
      

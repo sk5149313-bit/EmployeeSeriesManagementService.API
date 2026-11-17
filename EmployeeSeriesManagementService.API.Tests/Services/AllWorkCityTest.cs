@@ -12,25 +12,17 @@ namespace EmployeeSeriesManagementService.API.Tests.Services
     public class AllWorkCityTest
     {
 
-
+        //test case to validate city exists or not
         [Fact]
         public async Task GetAllWorkCityAsync_WhenCityDoesNotExist_ReturnsNull()
         {
-            // Arrange
             var options = new DbContextOptionsBuilder<EmployeeSeriesDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
-
             using var dbContext = new EmployeeSeriesDbContext(options);
-
             var logger = new Mock<ILogger<EmployeeService>>();
-
             var employeeService = new EmployeeService(dbContext, logger.Object);
-
-            // Act
             var result = await employeeService.GetAllWorkCityAsync();
-
-            // Assert
             Assert.Empty(result);
         }
        

@@ -25,7 +25,7 @@ public class SeriesService(EmployeeSeriesDbContext db, ILogger<SeriesService> lo
                 x.StartDate, x.EndDate))
             .ToListAsync();
     }
-
+   
     public async Task<SeriesDto?> CreateForEmployeeAsync(
         int employeeId, CreateEmployeeSeriesRequest request)
     {
@@ -60,6 +60,13 @@ public class SeriesService(EmployeeSeriesDbContext db, ILogger<SeriesService> lo
             throw new ArgumentException(
                 $"Series code {request.Code} already exists with a different name.");
         }
+
+        var duplicate = await db.EmployeeSeries.AnyAsync(x =>
+            x.EmployeeId == employeeId && x.SeriesCode == request.Code &&
+            x.StartDate == request.AssignmentStartDate);
+        if (duplicate)
+            throw new ArgumentException("This employee already has this series assignment starting on that date.");
+
 
         var assignment = new EmployeeSeries
         {
